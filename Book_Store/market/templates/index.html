@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BookStore</title>
+</head>
+<body>
+    <h1>BookStore</h1>
+
+    <form method="GET" action="{% url 'index' %}">
+        <input type="text" name="name" placeholder="Search by name" value="{{ request.GET.name }}">
+        <button type="submit">Search</button>
+    </form>
+
+    <div>
+        <ul>
+            {% for book in books %}
+            <li><a href="{% url 'book' book.pk %}">{{ book.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    {% if books.has_other_pages %}
+    <div>
+        <span>Page {{ books.number }} of {{ books.paginator.num_pages }}</span>
+        {% if books.has_previous %}
+        <a href="?page=1">First</a>
+        <a href="?page={{ books.previous_page_number }}">Previous</a>
+        {% endif %}
+        {% if books.has_next %}
+        <a href="?page={{ books.next_page_number }}">Next</a>
+        <a href="?page={{ books.paginator.num_pages }}">Last</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</body>
+</html>
